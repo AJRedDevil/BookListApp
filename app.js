@@ -1,5 +1,3 @@
-const Headers = ['title', 'author', 'isbn'];
-
 // Book Class: Represents a book
 class Book {
   constructor(title, author, isbn) {
@@ -12,24 +10,7 @@ class Book {
 // UI Class: Handle UI Tasks
 class UI {
   static displayBooks() {
-    const storedBooks = [
-      {
-        title: 'The BareFoot Investor',
-        author: 'Scott Page',
-        isbn: '123'
-      }, {
-        title: 'The One Thing',
-        author: 'Gary Keller and Jay Papasan',
-        isbn: '456'
-      }, {
-        title: 'Shoe Dog',
-        author: 'Phil Knight',
-        isbn: '789'
-      }
-    ];
-
-    const books = storedBooks;
-
+    const books = Store.getBooks();
     books.forEach(book => UI.addBookToList(book));
   }
 
@@ -73,7 +54,9 @@ class UI {
   }
 
   static clearFields() {
-    for (let header of Headers) {
+    for (let header of['title',
+      'author',
+      'isbn']) {
       document
         .querySelector(`#${header}`)
         .value = '';
@@ -82,7 +65,33 @@ class UI {
 }
 
 // Store Class: Handles Storage
-class Store {}
+class Store {
+  static getBooks() {
+    let books;
+    if (localStorage.getItem('books') === null) {
+      books = [];
+    } else {
+      books = JSON.parse(localStorage.getItem('books'));
+    }
+    return books;
+  }
+
+  static addBook(book) {
+    const books = Store.getBooks();
+    books.push(book);
+    localStorage.setItem('books', JSON.stringify(books));
+  }
+
+  static removeBook(isbn) {
+    const books = Store.getBooks();
+    books.forEach((book, index) => {
+      if (book.isbn === isbn) {
+        books.splice(index, 1);
+      }
+    })
+    localStorage.setItem('books', JSON.stringify(books));
+  }
+}
 
 // Event: Display Books
 document.addEventListener('DOMContentLoaded', UI.displayBooks);
@@ -115,6 +124,9 @@ document
       // Add book to UI
       UI.addBookToList(book);
 
+      // Add book to store
+      Store.addBook(book);
+
       // Show success message
       UI.showAlert('Book added.', 'success');
 
@@ -127,7 +139,11 @@ document
 document
   .querySelector('#book-list')
   .addEventListener('click', (e) => {
+    // Remove book from UI
     UI.deleteBook(e.target);
+
+    // Remove book from the store
+    Store.removeBook(e.target.parentElement.previousElementSibling.textContent);
 
     // Show delete message
     UI.showAlert('Book removed.', 'success');
