@@ -44,7 +44,15 @@ class UI {
       <td><a href='#' class='btn btn-danger btn-sm delete'>X</a></td>
     `;
     list.appendChild(row);
+  }
 
+  static deleteBook(el) {
+    if (el.classList.contains('delete')) {
+      el
+        .parentElement
+        .parentElement
+        .remove();
+    }
   }
 
   static clearFields() {
@@ -91,4 +99,8 @@ document
   });
 
 // Event: Remove a book
-class Event2 {}
+document
+  .querySelector('#book-list')
+  .addEventListener('click', (e) => {
+    UI.deleteBook(e.target);
+  });
