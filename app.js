@@ -50,10 +50,32 @@ class UI {
 class Store {}
 
 // Event: Display Books
-document.addEventListener('DOMContentLoaded', UI.displayBooks());
+document.addEventListener('DOMContentLoaded', UI.displayBooks);
 
 // Event: Add a book
-class Event1 {}
+document
+  .querySelector('#book-form')
+  .addEventListener('submit', (e) => {
+    // Prevent actual submit
+    e.preventDefault();
+
+    // Get form values
+    const title = document
+      .querySelector('#title')
+      .value;
+    const author = document
+      .querySelector('#author')
+      .value;
+    const isbn = document
+      .querySelector('#isbn')
+      .value;
+
+    // Instantiate a book
+    const book = new Book(title, author, isbn);
+
+    // Add book to UI
+    UI.addBookToList(book);
+  });
 
 // Event: Remove a book
 class Event2 {}
