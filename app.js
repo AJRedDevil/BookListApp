@@ -1,3 +1,5 @@
+const Headers = ['title', 'author', 'isbn'];
+
 // Book Class: Represents a book
 class Book {
   constructor(title, author, isbn) {
@@ -44,6 +46,14 @@ class UI {
     list.appendChild(row);
 
   }
+
+  static clearFields() {
+    for (let header of Headers) {
+      document
+        .querySelector(`#${header}`)
+        .value = '';
+    }
+  }
 }
 
 // Store Class: Handles Storage
@@ -75,6 +85,9 @@ document
 
     // Add book to UI
     UI.addBookToList(book);
+
+    // Clear fields
+    UI.clearFields();
   });
 
 // Event: Remove a book
