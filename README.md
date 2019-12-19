@@ -1,3 +1,5 @@
 # Javascript Booklist App | No Frameworks
 
-## [Link](https://www.youtube.com/watch?v=JaMCxVWtW58)
+[Tutorial](https://www.youtube.com/watch?v=JaMCxVWtW58)
+
+[Demo](https://ajreddevil-booklistapp.netlify.com)
